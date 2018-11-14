@@ -1,0 +1,1 @@
+export const GET_PLACE = "GET_PLACE";
