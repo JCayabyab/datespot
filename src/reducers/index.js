@@ -1,7 +1,8 @@
 import { combineReducers } from "redux";
+import placeReducer from "./placeReducer";
 
 const rootReducer = combineReducers({
-  test: () => "Hello world"
+  place: placeReducer
 });
 
 export default rootReducer;

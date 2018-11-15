@@ -1,17 +1,18 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import ReactDOM from 'react-dom';
-import camelize from 'camelize';
-import {makeCancelable} from 'cancelable-promise';
+import React from "react";
+import PropTypes from "prop-types";
+import ReactDOM from "react-dom";
+import camelize from "camelize";
+import { connect } from "react-redux";
+import { getPlace } from "../actions";
 
 const mapStyles = {
   container: {
-    position: 'absolute',
-    width: '100%',
-    height: '100%'
+    position: "absolute",
+    width: "100%",
+    height: "100%"
   },
   map: {
-    position: 'absolute',
+    position: "absolute",
     left: 0,
     right: 0,
     bottom: 0,
@@ -19,37 +20,35 @@ const mapStyles = {
   }
 };
 
-
 const evtNames = [
-  'ready',
-  'click',
-  'dragend',
-  'recenter',
-  'bounds_changed',
-  'center_changed',
-  'dblclick',
-  'dragstart',
-  'heading_change',
-  'idle',
-  'maptypeid_changed',
-  'mousemove',
-  'mouseout',
-  'mouseover',
-  'projection_changed',
-  'resize',
-  'rightclick',
-  'tilesloaded',
-  'tilt_changed',
-  'zoom_changed'
+  "ready",
+  "click",
+  "dragend",
+  "recenter",
+  "bounds_changed",
+  "center_changed",
+  "dblclick",
+  "dragstart",
+  "heading_change",
+  "idle",
+  "maptypeid_changed",
+  "mousemove",
+  "mouseout",
+  "mouseover",
+  "projection_changed",
+  "resize",
+  "rightclick",
+  "tilesloaded",
+  "tilt_changed",
+  "zoom_changed"
 ];
-
 
 export class Map extends React.Component {
   constructor(props) {
     super(props);
 
-    if (!props.hasOwnProperty('google')) {
-      throw new Error('You must include a `google` prop');
+    if (!props.hasOwnProperty("google")) {
+      throw new Error("You must include a `google` prop");
     }
 
     this.listeners = {};
@@ -62,33 +61,22 @@ export class Map extends React.Component {
   }
 
   componentDidMount() {
-    if (this.props.centerAroundCurrentLocation) {
-      if (navigator && navigator.geolocation) {
-        this.geoPromise = makeCancelable(
-          new Promise((resolve, reject) => {
-            navigator.geolocation.getCurrentPosition(resolve, reject);
-          })
-        );
-
-        this.geoPromise.promise
-          .then(pos => {
-            const coords = pos.coords;
-            this.setState({
-              currentLocation: {
-                lat: coords.latitude,
-                lng: coords.longitude
-              }
-            });
-          })
-          .catch(e => e);
-      }
-    }
     this.loadMap();
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.google !== this.props.google) {
       this.loadMap();
+    }
+    if(prevProps.dest !== this.props.dest) {
+      const newLocation = {
+        lat: (this.props.initialCenter.lat + this.props.dest.lat())/2,
+        lng: (this.props.initialCenter.lng + this.props.dest.lng())/2,
+      };
+
+      this.setState({
+        currentLocation: newLocation
+      });
     }
     if (this.props.visible !== prevProps.visible) {
       this.restyleMap();
@@ -102,6 +90,7 @@ export class Map extends React.Component {
       });
     }
     if (prevState.currentLocation !== this.state.currentLocation) {
+      console.log(prevState.currentLocation, this.state.currentLocation)
       this.recenterMap();
     }
     if (this.props.bounds && this.props.bounds !== prevProps.bounds) {
@@ -110,7 +99,7 @@ export class Map extends React.Component {
   }
 
   componentWillUnmount() {
-    const {google} = this.props;
+    const { google } = this.props;
     if (this.geoPromise) {
       this.geoPromise.cancel();
     }
@@ -121,14 +110,13 @@ export class Map extends React.Component {
 
   loadMap() {
     if (this.props && this.props.google) {
-      const {google} = this.props;
+      const { google } = this.props;
       const maps = google.maps;
 
       const mapRef = this.refs.map;
       const node = ReactDOM.findDOMNode(mapRef);
       const curr = this.state.currentLocation;
       const center = new maps.LatLng(curr.lat, curr.lng);
-
       const mapTypeIds = this.props.google.maps.MapTypeId || {};
       const mapTypeFromProps = String(this.props.mapType).toUpperCase();
 
@@ -169,25 +157,12 @@ export class Map extends React.Component {
 
       this.map = new maps.Map(node, mapConfig);
 
-      const request = {
-        query: 'Museum of Contemporary Art Australia',
-        fields: ['photos', 'formatted_address', 'name', 'rating', 'opening_hours', 'geometry'],
-      };
-    
-    
-
-      const service = new google.maps.places.PlacesService(this.map);
-      service.findPlaceFromQuery(request, (results, status) => {
-        if (status === google.maps.places.PlacesServiceStatus.OK) {
-          console.log(results);
-        }
-      });
- 
+      this.props.getPlace(google, this.map, this.state.currentLocation);
 
       evtNames.forEach(e => {
         this.listeners[e] = this.map.addListener(e, this.handleEvent(e));
       });
-      maps.event.trigger(this.map, 'ready');
+      maps.event.trigger(this.map, "ready");
       this.forceUpdate();
     }
   }
@@ -212,7 +187,7 @@ export class Map extends React.Component {
   recenterMap() {
     const map = this.map;
 
-    const {google} = this.props;
+    const { google } = this.props;
 
     if (!google) return;
     const maps = google.maps;
@@ -224,19 +199,19 @@ export class Map extends React.Component {
       }
       // map.panTo(center)
       map.setCenter(center);
-      maps.event.trigger(map, 'recenter');
+      maps.event.trigger(map, "recenter");
     }
   }
 
   restyleMap() {
     if (this.map) {
-      const {google} = this.props;
-      google.maps.event.trigger(this.map, 'resize');
+      const { google } = this.props;
+      google.maps.event.trigger(this.map, "resize");
     }
   }
 
   renderChildren() {
-    const {children} = this.props;
+    const { children } = this.props;
 
     if (!children) return;
 
@@ -252,7 +227,7 @@ export class Map extends React.Component {
 
   render() {
     const style = Object.assign({}, mapStyles.map, this.props.style, {
-      display: this.props.visible ? 'inherit' : 'none'
+      display: this.props.visible ? "inherit" : "none"
     });
 
     const containerStyles = Object.assign(
@@ -317,7 +292,16 @@ Map.defaultProps = {
   centerAroundCurrentLocation: false,
   style: {},
   containerStyle: {},
-  visible: true
+  visible: true,
+  zoomControl: false,
+  mapTypeControl: false,
+  scaleControl: false,
+  rotateControl: false,
+  fullscreenControl: false,
+  streetViewControl: false
 };
 
-export default Map;
+export default connect(
+  null,
+  { getPlace }
+)(Map);

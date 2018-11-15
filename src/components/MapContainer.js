@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Marker, GoogleApiWrapper } from "google-maps-react";
 import Map from "./Map";
 import keys from "../utils/keys";
+import { connect } from "react-redux";
 
 class Container extends Component {
   state = { pos: false, locnChecked: false };
@@ -14,13 +15,23 @@ class Container extends Component {
           pos: {
             lat: coords.latitude,
             lng: coords.longitude
-          }
+          },
+          locnChecked: true
         });
       });
+    } else {
+      this.setState({
+        locnChecked: true
+      });
     }
-    this.setState({
-      locnChecked: true
-    });
+  }
+
+  renderMarker() {
+    const { place } = this.props;
+    if (place.geometry) {
+      const placePos = place.geometry.location;
+      return <Marker position={placePos} />;
+    }
   }
 
   render() {
@@ -31,15 +42,16 @@ class Container extends Component {
     const { pos, locnChecked } = this.state;
 
     if (locnChecked) {
-      if (pos) {
+      if (pos !== false) {
         return (
           <Map
             google={this.props.google}
-            zoom={14}
+            zoom={11}
             style={mapStyle}
             initialCenter={this.state.pos}
+            dest={this.props.place.geometry ? this.props.place.geometry.location : null}
           >
-            <Marker />
+            {this.renderMarker()}
             <Marker position={this.state.pos} />
           </Map>
         );
@@ -52,4 +64,10 @@ class Container extends Component {
   }
 }
 
-export default GoogleApiWrapper({ apiKey: keys.googleKey })(Container);
+function mapStateToProps(state) {
+  return { place: state.place };
+}
+
+export default GoogleApiWrapper({ apiKey: keys.googleKey })(
+  connect(mapStateToProps)(Container)
+);
