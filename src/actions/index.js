@@ -1,4 +1,5 @@
 import { GET_PLACE } from "./types";
+import { GET_DIRECTIONS } from "./types";
 import randomElement from "../utils/randomElement";
 
 const funTypes = [
@@ -34,6 +35,29 @@ export const getPlace = (google, map, { lat, lng }) => async dispatch => {
     }
   });
 };
+
+export const getDirections = (google, origin, destination) => async dispatch => {
+  const service = new google.maps.DirectionsService();
+  const request = {
+    avoidTolls: true,
+    origin,
+    destination
+  }
+  
+  service.route(request, (results, status) => {
+    if (status === google.maps.DirectionsStatus.OK) {
+      dispatch({
+        type: GET_DIRECTIONS,
+        payload: results
+      });
+    } else {
+      dispatch({
+        type: GET_DIRECTIONS,
+        payload: status
+      });
+    }
+  })
+}
 
 const generateRequest = location => {
   const request = {

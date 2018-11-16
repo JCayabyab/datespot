@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import ReactDOM from "react-dom";
 import camelize from "camelize";
 import { connect } from "react-redux";
-import { getPlace } from "../actions";
+import { getPlace, getDirections } from "../actions";
 
 const mapStyles = {
   container: {
@@ -69,14 +69,10 @@ export class Map extends React.Component {
       this.loadMap();
     }
     if(prevProps.dest !== this.props.dest) {
-      const newLocation = {
-        lat: (this.props.initialCenter.lat + this.props.dest.lat())/2,
-        lng: (this.props.initialCenter.lng + this.props.dest.lng())/2,
-      };
-
-      this.setState({
-        currentLocation: newLocation
-      });
+      const bounds = new this.props.google.maps.LatLngBounds();
+      bounds.extend(this.props.initialCenter);
+      bounds.extend(this.props.dest);
+      this.map.fitBounds(bounds);
     }
     if (this.props.visible !== prevProps.visible) {
       this.restyleMap();
@@ -302,6 +298,6 @@ Map.defaultProps = {
 };
 
 export default connect(
-  null,
-  { getPlace }
+  state => ({directions: state.directions}),
+  { getPlace, getDirections }
 )(Map);
