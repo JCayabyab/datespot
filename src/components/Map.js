@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import ReactDOM from "react-dom";
 import camelize from "camelize";
 import { connect } from "react-redux";
-import { getPlace, getDirections } from "../actions";
+import { getDirections } from "../actions";
 
 const containerStyle = {
   width: "100%",
@@ -56,7 +56,6 @@ export class Map extends React.Component {
   }
 
   componentDidMount() {
-    this.props.getPlace(this.state.currentLocation);
     this.loadMap();
   }
 
@@ -309,5 +308,5 @@ Map.defaultProps = {
 
 export default connect(
   state => ({ directions: state.directions }),
-  { getPlace, getDirections }
+  { getDirections }
 )(Map);

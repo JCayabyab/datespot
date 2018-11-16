@@ -37,21 +37,15 @@ class SearchBar extends React.Component {
       .then(res => getLatLng(res[0]))
       .then(({ lat, lng }) => {
         this.props.getLocation(lat, lng);
-        this.setState({
-          isGeocoding: false
-        });
       })
       .catch(error => {
-        this.setState({ isGeocoding: false });
         console.log("error", error); // eslint-disable-line no-console
       });
   };
 
   handleCloseClick = () => {
     this.setState({
-      address: "",
-      latitude: null,
-      longitude: null
+      address: ""
     });
   };
 
@@ -63,10 +57,7 @@ class SearchBar extends React.Component {
   };
 
   render() {
-    const {
-      address,
-      errorMessage
-    } = this.state;
+    const { address, errorMessage } = this.state;
 
     return (
       <div>

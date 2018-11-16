@@ -5,6 +5,19 @@ export const LoadingIcon = styled.img`
   width: 50px;
 `
 
+export const MenuItem = styled.a`
+  text-decoration: none;
+  background-color: inherit;
+  transition: background-color 0.15s linear;
+  text-align: center;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #df1515;
+    text-decoration: none;
+  }
+`;
+
 export const Center = styled.div`
   display: flex;
   justify-content: center;

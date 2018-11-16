@@ -1,11 +1,22 @@
-import React from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
 import { getPlace } from "../actions";
-import { Text } from "../styled";
+import { MenuItem, Text } from "../styled";
 
-const Footer = ({ getPlace, pos }) => {
-  return <Text style={{textAlign: "center"}} onClick={() => getPlace(pos)}>Try again</Text>;
-};
+class Footer extends Component {
+  componentDidMount() {
+    this.props.getPlace(this.props.pos);
+  }
+
+  render() {
+    const { getPlace, pos } = this.props;
+    return (
+      <MenuItem onClick={() => getPlace(pos)}>
+        <Text>Try again</Text>
+      </MenuItem>
+    );
+  }
+}
 
 export default connect(
   null,
