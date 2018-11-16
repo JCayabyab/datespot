@@ -9,10 +9,10 @@ const Header = ({ place }) => {
   )}&destination_place_id=${encodeURI(place.place_id)}`;
   return (
     <Row>
-      <Text className="col-sm-12 col-md-4">Item</Text>
+      <Text className="col-sm-12 col-md-4">Fall in love at</Text>
       <Text className="col-sm-12 col-md-8">{place.name}</Text>
-      <a className="col-sm-12 col-md-12" href={directionsURL} target="_blank">
-        <Text>Directions</Text>
+      <a className="col-sm-12 col-md-12" rel="noopener noreferrer" href={directionsURL} target="_blank">
+        <Text style={{ textAlign: "center" }}>Directions</Text>
       </a>
     </Row>
   );

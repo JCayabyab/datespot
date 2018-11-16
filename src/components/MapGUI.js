@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import MapContainer from "./MapContainer";
 import styled from "styled-components";
 import Header from "./Header";
+import Footer from "./Footer";
 
 const Wrapper = styled.div`
   display: flex;
@@ -13,7 +14,7 @@ const MapGUI = ({ pos }) => (
   <Wrapper>
     <Header />
     <MapContainer pos={pos} />
-    <div>Footer</div>
+    <Footer pos={pos} />
   </Wrapper>
 );
 export default MapGUI;

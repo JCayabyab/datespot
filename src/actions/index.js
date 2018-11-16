@@ -19,11 +19,13 @@ const funTypes = [
 
 const foodTypes = ["restaurant"];
 
-export const getPlace = (google, map, { lat, lng }) => async dispatch => {
-  const service = new google.maps.places.PlacesService(map);
-  const location = new google.maps.LatLng(lat, lng);
+export const getPlace = ({ lat, lng }) => async dispatch => {
+  const { maps } = window.google;
+
+  const service = new maps.places.PlacesService(document.createElement("div"));
+  const location = new maps.LatLng(lat, lng);
   service.nearbySearch(generateRequest(location), (results, status) => {
-    if (status === google.maps.places.PlacesServiceStatus.OK) {
+    if (status === maps.places.PlacesServiceStatus.OK) {
       dispatch({
         type: GET_PLACE,
         payload: randomElement(results)
@@ -41,21 +43,18 @@ export const getLocation = (lat, lng) => {
   return { type: GET_LOCATION, payload: { lat, lng } };
 };
 
-export const getDirections = (
-  google,
-  origin,
-  destination
-) => async dispatch => {
-  const service = new google.maps.DirectionsService();
+export const getDirections = (origin, destination) => async dispatch => {
+  const { maps } = window.google;
+  const service = new maps.DirectionsService();
   const request = {
     avoidTolls: true,
     origin,
     destination,
-    travelMode: google.maps.TravelMode.DRIVING
+    travelMode: maps.TravelMode.DRIVING
   };
 
   service.route(request, (results, status) => {
-    if (status === google.maps.DirectionsStatus.OK) {
+    if (status === maps.DirectionsStatus.OK) {
       dispatch({
         type: GET_DIRECTIONS,
         payload: results
