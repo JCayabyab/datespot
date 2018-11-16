@@ -68,11 +68,20 @@ export class Map extends React.Component {
     if (prevProps.google !== this.props.google) {
       this.loadMap();
     }
-    if(prevProps.dest !== this.props.dest) {
-      const bounds = new this.props.google.maps.LatLngBounds();
+    if (prevProps.dest !== this.props.dest) {
+      const { google } = this.props;
+      const bounds = new google.maps.LatLngBounds();
       bounds.extend(this.props.initialCenter);
       bounds.extend(this.props.dest);
       this.map.fitBounds(bounds);
+      this.props.getDirections(
+        google,
+        this.props.initialCenter,
+        this.props.dest
+      );
+    }
+    if (prevProps.directions !== this.props.directions) {
+      this.renderDirections();
     }
     if (this.props.visible !== prevProps.visible) {
       this.restyleMap();
@@ -86,7 +95,7 @@ export class Map extends React.Component {
       });
     }
     if (prevState.currentLocation !== this.state.currentLocation) {
-      console.log(prevState.currentLocation, this.state.currentLocation)
+      console.log(prevState.currentLocation, this.state.currentLocation);
       this.recenterMap();
     }
     if (this.props.bounds && this.props.bounds !== prevProps.bounds) {
@@ -178,6 +187,20 @@ export class Map extends React.Component {
         }
       }, 0);
     };
+  }
+
+  renderDirections() {
+    const map = this.map;
+    const { google, directions } = this.props;
+
+    const directionsRenderer = new google.maps.DirectionsRenderer({
+      map,
+      draggable: false,
+      hideRouteList: false,
+      markerOptions: { visible: false }
+    });
+
+    directionsRenderer.setDirections(directions);
   }
 
   recenterMap() {
@@ -298,6 +321,6 @@ Map.defaultProps = {
 };
 
 export default connect(
-  state => ({directions: state.directions}),
+  state => ({ directions: state.directions }),
   { getPlace, getDirections }
 )(Map);

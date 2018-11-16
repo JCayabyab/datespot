@@ -36,14 +36,19 @@ export const getPlace = (google, map, { lat, lng }) => async dispatch => {
   });
 };
 
-export const getDirections = (google, origin, destination) => async dispatch => {
+export const getDirections = (
+  google,
+  origin,
+  destination
+) => async dispatch => {
   const service = new google.maps.DirectionsService();
   const request = {
     avoidTolls: true,
     origin,
-    destination
-  }
-  
+    destination,
+    travelMode: google.maps.TravelMode.DRIVING
+  };
+
   service.route(request, (results, status) => {
     if (status === google.maps.DirectionsStatus.OK) {
       dispatch({
@@ -51,13 +56,14 @@ export const getDirections = (google, origin, destination) => async dispatch => 
         payload: results
       });
     } else {
+      console.log(status);
       dispatch({
         type: GET_DIRECTIONS,
         payload: status
       });
     }
-  })
-}
+  });
+};
 
 const generateRequest = location => {
   const request = {
