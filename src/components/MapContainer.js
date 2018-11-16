@@ -3,7 +3,7 @@ import { Marker } from "google-maps-react";
 import Map from "./Map";
 import { connect } from "react-redux";
 
-class Container extends Component {
+class MapContainer extends Component {
   renderMarker() {
     const { place } = this.props;
     if (place.geometry) {
@@ -13,16 +13,11 @@ class Container extends Component {
   }
 
   render() {
-    const mapStyle = {
-      width: "100%",
-      height: "100%"
-    };
     const { pos } = this.props;
     return (
       <Map
         google={window.google}
         zoom={11}
-        style={mapStyle}
         initialCenter={pos}
         dest={
           this.props.place.geometry ? this.props.place.geometry.location : null
@@ -39,4 +34,4 @@ function mapStateToProps(state) {
   return { place: state.place };
 }
 
-export default connect(mapStateToProps)(Container);
+export default connect(mapStateToProps)(MapContainer);

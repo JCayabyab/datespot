@@ -1,24 +1,33 @@
-import React from 'react';
-import PlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
+import React from "react";
+import PlacesAutocomplete, {
+  geocodeByAddress,
+  getLatLng
+} from "react-places-autocomplete";
+import { getLocation } from "../../actions";
+import { connect } from "react-redux";
+import "./searchbar.css";
+
+import {
+  SearchBarContainer,
+  SearchInputContainer,
+  SearchInput,
+  ClearButton,
+  AutocompleteContainer
+} from "./styles";
 
 class SearchBar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      address: '',
-      errorMessage: '',
-      latitude: null,
-      longitude: null,
-      isGeocoding: false,
+      address: "",
+      errorMessage: ""
     };
   }
 
   handleChange = address => {
     this.setState({
       address,
-      latitude: null,
-      longitude: null,
-      errorMessage: '',
+      errorMessage: ""
     });
   };
 
@@ -27,28 +36,27 @@ class SearchBar extends React.Component {
     geocodeByAddress(selected)
       .then(res => getLatLng(res[0]))
       .then(({ lat, lng }) => {
+        this.props.getLocation(lat, lng);
         this.setState({
-          latitude: lat,
-          longitude: lng,
-          isGeocoding: false,
+          isGeocoding: false
         });
       })
       .catch(error => {
         this.setState({ isGeocoding: false });
-        console.log('error', error); // eslint-disable-line no-console
+        console.log("error", error); // eslint-disable-line no-console
       });
   };
 
   handleCloseClick = () => {
     this.setState({
-      address: '',
+      address: "",
       latitude: null,
-      longitude: null,
+      longitude: null
     });
   };
 
   handleError = (status, clearSuggestions) => {
-    console.log('Error from Google Maps API', status); // eslint-disable-line no-console
+    console.log("Error from Google Maps API", status); // eslint-disable-line no-console
     this.setState({ errorMessage: status }, () => {
       clearSuggestions();
     });
@@ -57,10 +65,7 @@ class SearchBar extends React.Component {
   render() {
     const {
       address,
-      errorMessage,
-      latitude,
-      longitude,
-      isGeocoding,
+      errorMessage
     } = this.state;
 
     return (
@@ -74,28 +79,22 @@ class SearchBar extends React.Component {
         >
           {({ getInputProps, suggestions, getSuggestionItemProps }) => {
             return (
-              <div className="Demo__search-bar-container">
-                <div className="Demo__search-input-container">
-                  <input
+              <SearchBarContainer>
+                <SearchInputContainer>
+                  <SearchInput
                     {...getInputProps({
-                      placeholder: 'Search Places...',
-                      className: 'Demo__search-input',
+                      placeholder: "Enter your location..."
                     })}
                   />
                   {this.state.address.length > 0 && (
-                    <button
-                      className="Demo__clear-button"
-                      onClick={this.handleCloseClick}
-                    >
-                      x
-                    </button>
+                    <ClearButton onClick={this.handleCloseClick}>x</ClearButton>
                   )}
-                </div>
+                </SearchInputContainer>
                 {suggestions.length > 0 && (
-                  <div className="Demo__autocomplete-container">
+                  <AutocompleteContainer>
                     {suggestions.map(suggestion => {
-                      const className = classnames('Demo__suggestion-item', {
-                        'Demo__suggestion-item--active': suggestion.active,
+                      const className = classnames("Demo__suggestion-item", {
+                        "Demo__suggestion-item--active": suggestion.active
                       });
 
                       return (
@@ -105,7 +104,7 @@ class SearchBar extends React.Component {
                         >
                           <strong>
                             {suggestion.formattedSuggestion.mainText}
-                          </strong>{' '}
+                          </strong>{" "}
                           <small>
                             {suggestion.formattedSuggestion.secondaryText}
                           </small>
@@ -115,42 +114,20 @@ class SearchBar extends React.Component {
                     })}
                     {/* <div className="Demo__dropdown-footer">
                       <div>
-                        <img
-                          src={require('../images/powered_by_google_default.png')}
-                          className="Demo__dropdown-footer-image"
-                        />
+                      <img
+                      src={require('../images/powered_by_google_default.png')}
+                      className="Demo__dropdown-footer-image"
+                      />
                       </div>
                     </div> */}
-                  </div>
+                  </AutocompleteContainer>
                 )}
-              </div>
+              </SearchBarContainer>
             );
           }}
         </PlacesAutocomplete>
         {errorMessage.length > 0 && (
           <div className="Demo__error-message">{this.state.errorMessage}</div>
-        )}
-
-        {((latitude && longitude) || isGeocoding) && (
-          <div>
-            <h3 className="Demo__geocode-result-header">Geocode result</h3>
-            {isGeocoding ? (
-              <div>
-                <i className="fa fa-spinner fa-pulse fa-3x fa-fw Demo__spinner" />
-              </div>
-            ) : (
-              <div>
-                <div className="Demo__geocode-result-item--lat">
-                  <label>Latitude:</label>
-                  <span>{latitude}</span>
-                </div>
-                <div className="Demo__geocode-result-item--lng">
-                  <label>Longitude:</label>
-                  <span>{longitude}</span>
-                </div>
-              </div>
-            )}
-          </div>
         )}
       </div>
     );
@@ -158,13 +135,13 @@ class SearchBar extends React.Component {
 }
 
 const isObject = val => {
-  return typeof val === 'object' && val !== null;
+  return typeof val === "object" && val !== null;
 };
 
 const classnames = (...args) => {
   const classes = [];
   args.forEach(arg => {
-    if (typeof arg === 'string') {
+    if (typeof arg === "string") {
       classes.push(arg);
     } else if (isObject(arg)) {
       Object.keys(arg).forEach(key => {
@@ -174,13 +151,15 @@ const classnames = (...args) => {
       });
     } else {
       throw new Error(
-        '`classnames` only accepts string or object as arguments'
+        "`classnames` only accepts string or object as arguments"
       );
     }
   });
 
-  return classes.join(' ');
+  return classes.join(" ");
 };
 
-
-export default SearchBar;
+export default connect(
+  null,
+  { getLocation }
+)(SearchBar);

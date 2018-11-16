@@ -1,12 +1,14 @@
 import React, { Component } from "react";
 
-import Container from "./Container";
+import MapGUI from "./MapGUI";
 import { Center } from "../styled";
 import Loading from "./Loading";
 import Failed from "./Failed";
+import { connect } from "react-redux";
+import { getLocation } from "../actions";
 
 class Home extends Component {
-  state = { pos: false, locnChecked: false };
+  state = { locnChecked: false };
 
   componentDidMount() {
     this.getLocation();
@@ -16,12 +18,9 @@ class Home extends Component {
     if (navigator && navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         pos => {
-          const coords = pos.coords;
+          const { latitude, longitude } = pos.coords;
+          this.props.getLocation(latitude, longitude);
           this.setState({
-            pos: {
-              lat: coords.latitude,
-              lng: coords.longitude
-            },
             locnChecked: true
           });
         },
@@ -39,19 +38,16 @@ class Home extends Component {
   }
 
   render() {
-    const { locnChecked, pos } = this.state;
+    const { locnChecked } = this.state;
+    const { location } = this.props;
 
     if (locnChecked) {
-      if (pos) {
-        return (
-          <div>
-            <Container pos={pos} />
-          </div>
-        );
+      if (location) {
+        return <MapGUI pos={location} />;
       } else {
         return (
           <Center>
-            <Failed/>
+            <Failed />
           </Center>
         );
       }
@@ -65,4 +61,7 @@ class Home extends Component {
   }
 }
 
-export default Home;
+export default connect(
+  state => ({ location: state.location }),
+  { getLocation }
+)(Home);

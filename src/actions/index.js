@@ -1,4 +1,5 @@
 import { GET_PLACE } from "./types";
+import { GET_LOCATION } from "./types";
 import { GET_DIRECTIONS } from "./types";
 import randomElement from "../utils/randomElement";
 
@@ -34,6 +35,10 @@ export const getPlace = (google, map, { lat, lng }) => async dispatch => {
       });
     }
   });
+};
+
+export const getLocation = (lat, lng) => {
+  return { type: GET_LOCATION, payload: { lat, lng } };
 };
 
 export const getDirections = (

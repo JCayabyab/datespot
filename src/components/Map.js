@@ -5,19 +5,13 @@ import camelize from "camelize";
 import { connect } from "react-redux";
 import { getPlace, getDirections } from "../actions";
 
-const mapStyles = {
-  container: {
-    position: "absolute",
-    width: "100%",
-    height: "100%"
-  },
-  map: {
-    position: "absolute",
-    left: 0,
-    right: 0,
-    bottom: 0,
-    top: 0
-  }
+const containerStyle = {
+  width: "100%",
+  flex: 1
+};
+const mapStyle = {
+  width: "100%",
+  height: "100%"
 };
 
 const evtNames = [
@@ -245,18 +239,12 @@ export class Map extends React.Component {
   }
 
   render() {
-    const style = Object.assign({}, mapStyles.map, this.props.style, {
+    const style = Object.assign({}, mapStyle, this.props.style, {
       display: this.props.visible ? "inherit" : "none"
     });
 
-    const containerStyles = Object.assign(
-      {},
-      mapStyles.container,
-      this.props.containerStyle
-    );
-
     return (
-      <div style={containerStyles} className={this.props.className}>
+      <div style={containerStyle} className={this.props.className}>
         <div style={style} ref="map">
           Loading map...
         </div>

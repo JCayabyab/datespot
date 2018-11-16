@@ -1,0 +1,10 @@
+.Demo__suggestion-item {
+  padding: 8px;
+  text-align: left;
+  background-color: #fff;
+  cursor: pointer;
+}
+
+.Demo__suggestion-item--active {
+  background-color: #fafafa;
+}

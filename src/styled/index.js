@@ -1,9 +1,4 @@
-import styled, { keyframes } from "styled-components";
-
-const bounce = keyframes`
-from { transform: translate3d(0, 0, 0);     }
-  to   { transform: translate3d(0, 50px, 0); }
-`;
+import styled from "styled-components";
 
 export const LoadingIcon = styled.img`
   height: 50px;
@@ -22,3 +17,8 @@ export const Text = styled.div`
   color: #fff;
   font-weight: bold;
 `
+
+export const Row = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+`;
