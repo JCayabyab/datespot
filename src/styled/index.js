@@ -16,3 +16,9 @@ export const Center = styled.div`
   align-items: center;
   min-height: 100vh;
 `;
+
+export const Text = styled.div`
+  font-family: 'Quicksand', sans-serif;
+  color: #fff;
+  font-weight: bold;
+`

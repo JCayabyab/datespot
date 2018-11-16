@@ -1,6 +1,5 @@
 import React from 'react';
-import PlacesAutocomplete, { geocodeByAddress, getLatLng } from '../../src';
-import { classnames } from '../helpers';
+import PlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 
 class SearchBar extends React.Component {
   constructor(props) {
@@ -114,14 +113,14 @@ class SearchBar extends React.Component {
                       );
                       /* eslint-enable react/jsx-key */
                     })}
-                    <div className="Demo__dropdown-footer">
+                    {/* <div className="Demo__dropdown-footer">
                       <div>
                         <img
                           src={require('../images/powered_by_google_default.png')}
                           className="Demo__dropdown-footer-image"
                         />
                       </div>
-                    </div>
+                    </div> */}
                   </div>
                 )}
               </div>
@@ -157,5 +156,31 @@ class SearchBar extends React.Component {
     );
   }
 }
+
+const isObject = val => {
+  return typeof val === 'object' && val !== null;
+};
+
+const classnames = (...args) => {
+  const classes = [];
+  args.forEach(arg => {
+    if (typeof arg === 'string') {
+      classes.push(arg);
+    } else if (isObject(arg)) {
+      Object.keys(arg).forEach(key => {
+        if (arg[key]) {
+          classes.push(key);
+        }
+      });
+    } else {
+      throw new Error(
+        '`classnames` only accepts string or object as arguments'
+      );
+    }
+  });
+
+  return classes.join(' ');
+};
+
 
 export default SearchBar;

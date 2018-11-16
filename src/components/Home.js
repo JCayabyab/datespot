@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 
 import Container from "./Container";
-import Loading from "./Loading";
 import { Center } from "../styled";
+import Loading from "./Loading";
+import Failed from "./Failed";
 
 class Home extends Component {
   state = { pos: false, locnChecked: false };
@@ -50,7 +51,7 @@ class Home extends Component {
       } else {
         return (
           <Center>
-            <div>Location failed</div>
+            <Failed/>
           </Center>
         );
       }

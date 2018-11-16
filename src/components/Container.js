@@ -1,7 +1,6 @@
 import React, { Component } from "react";
-import { Marker, GoogleApiWrapper } from "google-maps-react";
+import { Marker } from "google-maps-react";
 import Map from "./Map";
-import keys from "../utils/keys";
 import { connect } from "react-redux";
 
 class Container extends Component {
@@ -21,7 +20,7 @@ class Container extends Component {
     const { pos } = this.props;
     return (
       <Map
-        google={this.props.google}
+        google={window.google}
         zoom={11}
         style={mapStyle}
         initialCenter={pos}
@@ -40,6 +39,4 @@ function mapStateToProps(state) {
   return { place: state.place };
 }
 
-export default GoogleApiWrapper({ apiKey: keys.googleKey })(
-  connect(mapStateToProps)(Container)
-);
+export default connect(mapStateToProps)(Container);
