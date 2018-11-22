@@ -14,9 +14,10 @@ export const getPlace = ({ lat, lng }, key) => async dispatch => {
 
   const { request, description } = generateRequest(location, key);
 
+  console.log(request.keyword);
+
   service.nearbySearch(request, (results, status) => {
     if (status === maps.places.PlacesServiceStatus.OK) {
-      console.log(results);
       dispatch({
         type: GET_PLACE,
         payload: randomElement(results)
@@ -26,6 +27,7 @@ export const getPlace = ({ lat, lng }, key) => async dispatch => {
         payload: description
       });
     } else {
+      console.log(status);
       dispatch({
         type: GET_PLACE,
         payload: status
