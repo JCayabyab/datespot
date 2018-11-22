@@ -8,7 +8,7 @@ export const OptionsList = [
     key: "food"
   },
   {
-    title: "I want to go on a stroll",
+    title: "I want to relax",
     key: "stroll",
   },
   {

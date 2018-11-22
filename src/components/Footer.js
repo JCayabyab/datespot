@@ -23,7 +23,7 @@ const Option = styled(MenuItem)`
 
 class Footer extends Component {
   componentDidMount() {
-    this.props.getPlace(this.props.pos);
+    this.props.getPlace(this.props.pos, "food");
   }
 
   render() {

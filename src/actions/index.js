@@ -3,19 +3,6 @@ import { GET_LOCATION } from "./types";
 import { GET_DIRECTIONS } from "./types";
 import randomElement from "../utils/randomElement";
 
-const funTypes = [
-  "amusement_park",
-  "aquarium",
-  "museum",
-  "art_gallery",
-  "book_store",
-  "bowling_alley",
-  "movie_theater",
-  "park",
-  "shopping_mall",
-  "zoo"
-];
-
 export const getPlace = ({ lat, lng }, key) => async dispatch => {
   const { maps } = window.google;
 
@@ -71,7 +58,20 @@ export const getDirections = (origin, destination) => async dispatch => {
 
 const generateRequest = (location, key) => {
   console.log(key);
-  
+
+  const funTypes = [
+    "amusement_park",
+    "aquarium",
+    "museum",
+    "art_gallery",
+    "book_store",
+    "bowling_alley",
+    "movie_theater",
+    "park",
+    "shopping_mall",
+    "zoo"
+  ];
+
   const request = {
     location,
     radius: 50000
