@@ -1,7 +1,14 @@
 import React from "react";
 import { Row, Text, MenuItem } from "../styled";
 import { connect } from "react-redux";
+import styled from "styled-components";
 
+const HeaderWrapper = styled(Row)`
+  @media (min-width: 768px) {
+    height: 40px;
+    align-items: center;
+  }
+`;
 
 const Header = ({ place }) => {
   console.log(place);
@@ -9,18 +16,23 @@ const Header = ({ place }) => {
     place.name
   )}&destination_place_id=${encodeURI(place.place_id)}`;
   return (
-    <Row>
-      <Text style={{textAlign: "center"}} className="col-xs-12 col-md-3">Fall in love at</Text>
-      <Text style={{textAlign: "center"}} className="col-xs-12 col-md-6">{place.name || "..."}</Text>
+    <HeaderWrapper>
+      <Text style={{ fontWeight: "normal" }} className="col-xs-12 col-md-3">
+        <div>Fall in love at</div>
+      </Text>
+      <Text className="col-xs-12 col-md-6">
+        <div>{place.name || "..."}</div>
+      </Text>
       <MenuItem
         className="col-xs-12 col-md-3"
         rel="noopener noreferrer"
         href={directionsURL}
         target="_blank"
+        style={{height: "40px"}}
       >
-        <Text style={{ textAlign: "center" }}>Directions</Text>
+        <Text style={{ fontWeight: "normal" }}>Directions</Text>
       </MenuItem>
-    </Row>
+    </HeaderWrapper>
   );
 };
 

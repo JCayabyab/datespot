@@ -17,8 +17,6 @@ const funTypes = [
   "zoo"
 ];
 
-const foodTypes = ["restaurant"];
-
 export const getPlace = ({ lat, lng }) => async dispatch => {
   const { maps } = window.google;
 

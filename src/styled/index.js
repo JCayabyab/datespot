@@ -7,10 +7,11 @@ export const LoadingIcon = styled.img`
 
 export const MenuItem = styled.a`
   text-decoration: none;
-  background-color: inherit;
-  transition: background-color 0.15s linear;
   text-align: center;
   cursor: pointer;
+  align-self: stretch;
+  background-color: #ef2525;
+  transition: background-color 0.15s linear;
 
   &:hover {
     background-color: #df1515;
@@ -29,9 +30,29 @@ export const Text = styled.div`
   font-family: 'Quicksand', sans-serif;
   color: #fff;
   font-weight: bold;
+  height: 100%;
+  align-self: stretch;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `
 
 export const Row = styled.div`
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
+`;
+
+export const Badge = styled.div`
+  & > small {
+    color: white;
+    overflow: hidden;
+    white-space: nowrap;
+    text-align: center;
+    display: block;
+  }
+  padding: 0px 15px;
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;

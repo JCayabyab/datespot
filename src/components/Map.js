@@ -285,6 +285,7 @@ Map.propTypes = {
   bounds: PropTypes.object
 };
 
+// eslint-disable-next-line
 evtNames.forEach(e => (Map.propTypes[camelize(e)] = PropTypes.func));
 
 Map.defaultProps = {

@@ -6,6 +6,7 @@
     "camelize": "^1.0.0",
     "google-maps-react": "^2.0.2",
     "react": "^16.6.3",
+    "react-click-outside": "^3.0.1",
     "react-dom": "^16.6.3",
     "react-places-autocomplete": "^7.2.0",
     "react-redux": "^5.1.1",
