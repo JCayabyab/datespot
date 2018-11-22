@@ -14,8 +14,7 @@ const Wrapper = styled.div`
 const MapGUI = ({ pos }) => (
   <Wrapper>
     <Header />
-    <div>Map</div>
-    {/* <MapContainer pos={pos} /> */}
+    <MapContainer pos={pos} />
     <Footer pos={pos} />
   </Wrapper>
 );

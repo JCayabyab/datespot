@@ -12,6 +12,7 @@ export const MenuItem = styled.a`
   align-self: stretch;
   background-color: #ef2525;
   transition: background-color 0.15s linear;
+  padding: 5px;
 
   &:hover, :focus {
     background-color: #df1515;

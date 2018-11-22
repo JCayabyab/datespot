@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import onClickOutside from "react-onclickoutside"; // npm i react-onclickoutside
 import styled from "styled-components";
 import {Text} from "../styled";
-import DropdownList from "../utils/DropdownList";
+import OptionsList from "../utils/OptionsList";
 
 class Dropdown extends Component {
   constructor(props) {
@@ -35,12 +35,12 @@ class Dropdown extends Component {
           onClick={() => this.toggleList()}
         >
           <Title>{title}</Title>
-          <Icon className={`fas fa-angle-${isOpen ? "down" : "up"}`} />
+          <Icon className={`fas fa-angle-down`} isOpen={isOpen}/>
         </Header>
 
         {isOpen && (
-          <List list={DropdownList}>
-            {DropdownList.map(({title, key}) => (
+          <List list={OptionsList}>
+            {OptionsList.map(({title, key}) => (
                 <ListItem
                   key={key}
                   onClick={() => getPlace(key)}
@@ -102,6 +102,9 @@ const Header = styled.button`
 `;
 const Icon = styled.i`
   margin: 0px 7px;
+  transform: rotate(${props => props.isOpen ? 180 : 0}deg);
+  transition: transform 0.2s ease-out;
+
 `;
 const List = styled.div`
   position: absolute;
