@@ -12,17 +12,19 @@ const funTypes = [
   "bowling_alley",
   "movie_theater",
   "park",
-  "pet_store",
   "shopping_mall",
   "zoo"
 ];
 
-export const getPlace = ({ lat, lng }) => async dispatch => {
+export const getPlace = ({ lat, lng }, key) => async dispatch => {
   const { maps } = window.google;
 
   const service = new maps.places.PlacesService(document.createElement("div"));
   const location = new maps.LatLng(lat, lng);
-  service.nearbySearch(generateRequest(location), (results, status) => {
+
+  const request = generateRequest(location, key);
+
+  service.nearbySearch(request, (results, status) => {
     if (status === maps.places.PlacesServiceStatus.OK) {
       dispatch({
         type: GET_PLACE,
@@ -67,7 +69,9 @@ export const getDirections = (origin, destination) => async dispatch => {
   });
 };
 
-const generateRequest = location => {
+const generateRequest = (location, key) => {
+  console.log(key);
+  
   const request = {
     location,
     radius: 50000

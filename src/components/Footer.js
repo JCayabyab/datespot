@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { getPlace } from "../actions";
 import { MenuItem, Text, Row, Badge } from "../styled";
 import styled from "styled-components";
+import Dropdown from "./Dropdown";
 
 const FooterWrapper = styled(Row)`
   height: 60px;
@@ -13,8 +14,6 @@ const FooterWrapper = styled(Row)`
   }
 `;
 
-
-
 class Footer extends Component {
   componentDidMount() {
     // this.props.getPlace(this.props.pos);
@@ -24,9 +23,13 @@ class Footer extends Component {
     const { getPlace, pos } = this.props;
     return (
       <FooterWrapper>
-        <MenuItem onClick={() => getPlace(pos)}>
+        {/* <MenuItem style={{flex: 1}} onClick={() => getPlace(pos)}>
           <Text>Try again</Text>
-        </MenuItem>
+        </MenuItem> */}
+        <Dropdown
+          title="Not your cup of tea?"
+          getPlace={(key) => getPlace(pos, key)}
+        />
         <Badge>
           <small>Jofred Cayabyab &copy; 2018</small>
         </Badge>

@@ -6,14 +6,14 @@ export const LoadingIcon = styled.img`
 `
 
 export const MenuItem = styled.a`
-  text-decoration: none;
+  text-decoration : none;
   text-align: center;
   cursor: pointer;
   align-self: stretch;
   background-color: #ef2525;
   transition: background-color 0.15s linear;
 
-  &:hover {
+  &:hover, :focus {
     background-color: #df1515;
     text-decoration: none;
   }
