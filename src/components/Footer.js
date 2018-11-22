@@ -35,7 +35,7 @@ class Footer extends Component {
             matches ? (
               <Dropdown
                 title="Not your cup of tea?"
-                getPlace={key => getPlace(pos, key)}
+                getPlace={getPlace}
               />
             ) : (
               <Row style={{ flex: 1, alignSelf: "stretch" }}>

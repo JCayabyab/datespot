@@ -1,14 +1,14 @@
 import React, { Component } from "react";
 import onClickOutside from "react-onclickoutside"; // npm i react-onclickoutside
 import styled from "styled-components";
-import {Text} from "../styled";
+import { Text } from "../styled";
 import OptionsList from "../utils/OptionsList";
 
 class Dropdown extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isOpen: false,
+      isOpen: false
     };
 
     this.toggleList = this.toggleList.bind(this);
@@ -26,28 +26,23 @@ class Dropdown extends Component {
   }
 
   render() {
-    const { title, getPlace } = this.props;
+    const { title, getPlace, pos } = this.props;
     const { isOpen } = this.state;
-    
+
     return (
       <DropdownWrapper>
-        <Header
-          onClick={() => this.toggleList()}
-        >
+        <Header onClick={() => this.toggleList()}>
           <Title>{title}</Title>
-          <Icon className={`fas fa-angle-down`} isOpen={isOpen}/>
+          <Icon className={`fas fa-angle-down`} isOpen={isOpen} />
         </Header>
 
         {isOpen && (
           <List list={OptionsList}>
-            {OptionsList.map(({title, key}) => (
-                <ListItem
-                  key={key}
-                  onClick={() => getPlace(key)}
-                >
-                  <Text>{title}</Text>
-                </ListItem>
-              ))}
+            {OptionsList.map(({ title, key }) => (
+              <ListItem key={key} onClick={() => getPlace(pos, key)}>
+                <Text>{title}</Text>
+              </ListItem>
+            ))}
           </List>
         )}
       </DropdownWrapper>
@@ -88,7 +83,8 @@ const Header = styled.button`
   height: 100%;
   width: 100%;
 
-  &:hover, :focus {
+  &:hover,
+  :focus {
     color: #fff;
     background-color: #df1515;
     text-decoration: none;
@@ -102,9 +98,8 @@ const Header = styled.button`
 `;
 const Icon = styled.i`
   margin: 0px 7px;
-  transform: rotate(${props => props.isOpen ? 180 : 0}deg);
+  transform: rotate(${props => (props.isOpen ? 180 : 0)}deg);
   transition: transform 0.2s ease-out;
-
 `;
 const List = styled.div`
   position: absolute;
@@ -138,7 +133,6 @@ const ListItem = styled.div`
   border: 0;
   cursor: pointer;
   transition: background-color 0.15s ease-in-out;
-
 
   &:hover,
   :focus {
