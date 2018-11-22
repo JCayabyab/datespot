@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import _ from "lodash";
 import { connect } from "react-redux";
 import { getPlace } from "../actions";
 import { MenuItem, Text, Row, Badge } from "../styled";
@@ -27,7 +28,8 @@ class Footer extends Component {
   }
 
   render() {
-    const { getPlace, pos } = this.props;
+    const { pos } = this.props;
+    const getPlace = _.debounce(this.props.getPlace, 300);
     return (
       <FooterWrapper>
         <Media query="(max-width: 1000px)">
@@ -36,10 +38,11 @@ class Footer extends Component {
               <Dropdown
                 title="Not your cup of tea?"
                 getPlace={getPlace}
+                pos={pos}
               />
             ) : (
               <Row style={{ flex: 1, alignSelf: "stretch" }}>
-                {OptionsList.map(({title, key}) => (
+                {OptionsList.map(({ title, key }) => (
                   <Option key={key} onClick={() => getPlace(pos, key)}>
                     <Text>{title}</Text>
                   </Option>

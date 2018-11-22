@@ -14,8 +14,9 @@ export const getPlace = ({ lat, lng }, key) => async dispatch => {
 
   const { request, description } = generateRequest(location, key);
 
-  service.findPlaceFromQuery(request, (results, status) => {
+  service.nearbySearch(request, (results, status) => {
     if (status === maps.places.PlacesServiceStatus.OK) {
+      console.log(results);
       dispatch({
         type: GET_PLACE,
         payload: randomElement(results)
@@ -95,13 +96,17 @@ const generateRequest = (location, key) => {
     ]
   };
 
+  console.log(location.lat(), location.lng());
+
   const request = {
-    locationBias: { radius: 30000, center: location },
+    radius: 30000,
+    location,
+    minPriceLevel: 1,
     fields: ["geometry", "name", "id", "place_id"]
   };
 
-  const { query, description } = randomElement(types.fun);
-  Object.assign(request, { query: query + " near me" });
+  const { query, description } = randomElement(types[key]);
+  Object.assign(request, { keyword: query });
 
   return { request, description };
 };

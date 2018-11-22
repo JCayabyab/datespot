@@ -29,6 +29,8 @@ class Dropdown extends Component {
     const { title, getPlace, pos } = this.props;
     const { isOpen } = this.state;
 
+    console.log(pos);
+
     return (
       <DropdownWrapper>
         <Header onClick={() => this.toggleList()}>
