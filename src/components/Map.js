@@ -250,7 +250,7 @@ Map.propTypes = {
 };
 
 // eslint-disable-next-line
-evtNames.forEach(e => (Map.propTypes[camelize(e)] = PropTypes.func));
+// evtNames.forEach(e => (Map.propTypes[camelize(e)] = PropTypes.func));
 
 Map.defaultProps = {
   zoom: 14,
