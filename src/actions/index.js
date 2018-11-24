@@ -15,6 +15,9 @@ export const getPlace = ({ lat, lng }, key) => async dispatch => {
 
   let counter = 0;
 
+  // this Promise format allows for recursion to allow for retries if zero results are found.
+  // This makes it possible to try another type if one is not found,
+  // e.g. if no aquariums in the area, try to find a movie theater.
   const makeRequest = (resolve, reject, counter) => {
     const { request, description } = generateRequest(location, key);
 
@@ -23,16 +26,14 @@ export const getPlace = ({ lat, lng }, key) => async dispatch => {
         resolve({ results, description });
         return;
       } else {
-        if (counter < 3) {
-          console.log(request);
+        if (counter < 4) {
           counter++;
-          makeRequest(resolve, reject, counter);
+          // setTimeout for exponential backoff of API requests.
+          setTimeout(
+            Math.pow(2, counter) * 90,
+            makeRequest(resolve, reject, counter)
+          );
         } else {
-          console.log("exit", status, reject, counter);
-          dispatch({
-            type: GET_PLACE,
-            payload: status
-          });
           reject(status);
         }
       }
@@ -41,17 +42,33 @@ export const getPlace = ({ lat, lng }, key) => async dispatch => {
 
   new Promise((resolve, reject) => {
     makeRequest(resolve, reject, counter);
-  }).then(data => {
-    const result = randomElement(data.results);
-    dispatch({
-      type: GET_PLACE,
-      payload: result
+  })
+    .then(data => {
+      const result = randomElement(data.results);
+      dispatch({
+        type: GET_PLACE,
+        payload: result
+      });
+      dispatch({
+        type: GET_DESCRIPTION,
+        payload: data.description
+      });
+    })
+    .catch(status => {
+      console.log(status, ": There are no results in this location.");
+      // This makes the header display no results.
+      const noResultsRequest = {
+        name: "Sorry! Nothing here."
+      };
+      dispatch({
+        type: GET_PLACE,
+        payload: noResultsRequest
+      });
+      dispatch({
+        type: GET_DESCRIPTION,
+        payload: "..."
+      });
     });
-    dispatch({
-      type: GET_DESCRIPTION,
-      payload: data.description
-    });
-  });
 };
 
 export const getLocation = (lat, lng) => {
