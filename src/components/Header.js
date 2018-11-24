@@ -11,9 +11,24 @@ const HeaderWrapper = styled(Row)`
 `;
 
 const Header = ({ place, description }) => {
-  const directionsURL = `https://www.google.com/maps/dir/?api=1&destination=${encodeURI(
+  const placeURL = `https://www.google.com/maps/search/?api=1&query=${encodeURI(
     place.name
-  )}&destination_place_id=${encodeURI(place.place_id)}`;
+  )}&query_place_id=${encodeURI(place.place_id)}`;
+
+  // object for optional href
+  const detailsProps = {
+    className: "col-xs-12 col-md-3",
+    rel: "noopener noreferrer",
+    target: "_blank"
+  };
+
+  // disable the button if no results are shown.
+  if (place.place_id) {
+    detailsProps.href = placeURL;
+  } else {
+    detailsProps.disabled = true;
+  }
+
   return (
     <HeaderWrapper>
       <Text style={{ fontWeight: "normal" }} className="col-xs-12 col-md-3">
@@ -22,13 +37,8 @@ const Header = ({ place, description }) => {
       <Text className="col-xs-12 col-md-6">
         <div>{place.name || "..."}</div>
       </Text>
-      <MenuItem
-        className="col-xs-12 col-md-3"
-        rel="noopener noreferrer"
-        href={directionsURL}
-        target="_blank"
-      >
-        <Text style={{ fontWeight: "normal" }}>Directions</Text>
+      <MenuItem {...detailsProps}>
+        <Text style={{ fontWeight: "normal" }}>Details</Text>
       </MenuItem>
     </HeaderWrapper>
   );

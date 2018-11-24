@@ -5,6 +5,8 @@ import { connect } from "react-redux";
 
 class MapContainer extends Component {
   renderMarker() {
+    // render a marker of the destination if there is one found.
+    // This checks for the possibility of no results.
     const { place } = this.props;
     if (place.geometry) {
       const placePos = place.geometry.location;

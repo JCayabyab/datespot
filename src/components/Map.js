@@ -42,6 +42,7 @@ export class Map extends React.Component {
     super(props);
 
     this.listeners = {};
+    // null check means that no directions will be rendered if nothing is found.
     this.state = {
       directionsRenderer: null
     };
@@ -165,7 +166,6 @@ export class Map extends React.Component {
   async renderDirections() {
     const map = this.map;
     const { directions } = this.props;
-
     if (!this.state.directionsRenderer) {
       await this.setState({
         directionsRenderer: new window.google.maps.DirectionsRenderer({

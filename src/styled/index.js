@@ -3,21 +3,23 @@ import styled from "styled-components";
 export const LoadingIcon = styled.img`
   height: 50px;
   width: 50px;
-`
+`;
 
 export const MenuItem = styled.a`
-  text-decoration : none;
+  text-decoration: none;
   text-align: center;
-  cursor: pointer;
   align-self: stretch;
   background-color: #ef2525;
   transition: background-color 0.15s linear;
   padding: 5px;
 
-  &:hover, :focus {
+  ${props => (!props.disabled &&
+    `cursor: pointer;
+  &:hover,
+  :focus {
     background-color: #df1515;
     text-decoration: none;
-  }
+  }`)}
 `;
 
 export const Center = styled.div`
@@ -28,7 +30,7 @@ export const Center = styled.div`
 `;
 
 export const Text = styled.div`
-  font-family: 'Quicksand', sans-serif;
+  font-family: "Quicksand", sans-serif;
   color: #fff;
   font-weight: bold;
   height: 100%;
@@ -36,7 +38,7 @@ export const Text = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-`
+`;
 
 export const Row = styled.div`
   display: flex;

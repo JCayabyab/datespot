@@ -10,8 +10,11 @@ const Wrapper = styled.div`
 
 const Failed = () => (
   <Wrapper className="container">
-
-    <Text style={{textAlign: "center"}}>Sorry! We couldn't find your location.</Text>
+    <div>
+      <Text style={{ textAlign: "center" }}>
+        Sorry! We couldn't find your location.
+      </Text>
+    </div>
     <SearchBar />
   </Wrapper>
 );
