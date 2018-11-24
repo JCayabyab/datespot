@@ -13,13 +13,15 @@ export const MenuItem = styled.a`
   transition: background-color 0.15s linear;
   padding: 5px;
 
-  ${props => (!props.disabled &&
+  ${props =>
+    !props.disabled &&
     `cursor: pointer;
-  &:hover,
-  :focus {
-    background-color: #df1515;
-    text-decoration: none;
-  }`)}
+    
+    &:hover,
+    :focus {
+      background-color: #df1515;
+      text-decoration: none;
+    }`}
 `;
 
 export const Center = styled.div`
@@ -58,4 +60,44 @@ export const Badge = styled.div`
   @media (max-width: 768px) {
     display: none;
   }
+`;
+
+export const GitHubLink = styled.a`
+  text-decoration: none;
+  text-align: center;
+  align-self: stretch;
+  padding: 0px 7px;
+  color: rgba(0, 0, 0, 0.1);
+  font-size: 28pt;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+
+  & i {
+    margin: auto;
+    color: rgba(0, 0, 0, 0.4);
+    transition: color 0.15s linear;
+  }
+
+  &:hover,
+  :focus {
+    text-decoration: none;
+
+    & i {
+      color: rgba(0, 0, 0, 0.8);
+    }
+  }
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
+
+export const Options = styled(Row)`
+  flex: 1;
+  align-self: stretch;
+`;
+
+export const Option = styled(MenuItem)`
+  flex: 1;
 `;

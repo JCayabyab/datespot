@@ -10,6 +10,9 @@ import generateRequest from "../utils/generateRequest";
 export const getPlace = ({ lat, lng }, key) => async dispatch => {
   const { maps } = window.google;
 
+  // this is probably bad practice since the places service does not use the
+  // map component, but the results are still displayed on the google map, so
+  // there is no violation of the terms of service.
   const service = new maps.places.PlacesService(document.createElement("div"));
   const location = new maps.LatLng(lat, lng);
 

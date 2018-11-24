@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import _ from "lodash";
 import { connect } from "react-redux";
 import { getPlace } from "../actions";
-import { MenuItem, Text, Row, Badge } from "../styled";
+import { Text, Row, Badge, Options, Option, GitHubLink } from "../styled";
 import styled from "styled-components";
 import Dropdown from "./Dropdown";
 import OptionsList from "../utils/OptionsList";
@@ -16,10 +16,6 @@ const FooterWrapper = styled(Row)`
     height: 50px;
     align-items: center;
   }
-`;
-
-const Option = styled(MenuItem)`
-  flex: 1;
 `;
 
 class Footer extends Component {
@@ -36,6 +32,13 @@ class Footer extends Component {
     });
     return (
       <FooterWrapper>
+        <GitHubLink
+          href="https://github.com/JCayabyab/datespot"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          <i className="fab fa-github" />
+        </GitHubLink>
         <Media query="(max-width: 1000px)">
           {matches =>
             matches ? (
@@ -45,13 +48,13 @@ class Footer extends Component {
                 pos={pos}
               />
             ) : (
-              <Row style={{ flex: 1, alignSelf: "stretch" }}>
+              <Options>
                 {OptionsList.map(({ title, key }) => (
                   <Option key={key} onClick={() => getPlace(pos, key)}>
                     <Text>{title}</Text>
                   </Option>
                 ))}
-              </Row>
+              </Options>
             )
           }
         </Media>
