@@ -102,3 +102,18 @@ export const Options = styled(Row)`
 export const Option = styled(MenuItem)`
   flex: 1;
 `;
+
+export const MoreInfo = styled(MenuItem)`
+  & i {
+    padding: 0px 7px;
+    transition: transform 0.25s ease-out;
+    transform: translateX(0px);
+  }
+
+  &:hover,
+  :focus {
+    & i {
+      transform: translateX(5px);
+    }
+  }
+`;

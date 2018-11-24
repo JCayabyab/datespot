@@ -1,5 +1,5 @@
 import React from "react";
-import { Row, Text, MenuItem } from "../styled";
+import { Row, Text, MoreInfo } from "../styled";
 import { connect } from "react-redux";
 import styled from "styled-components";
 
@@ -37,12 +37,12 @@ const Header = ({ place, description }) => {
       <Text className="col-xs-12 col-md-6">
         <div>{place.name || "..."}</div>
       </Text>
-      <MenuItem {...detailsProps}>
+      <MoreInfo {...detailsProps}>
         <Text style={{ fontWeight: "normal" }}>
-          More info <i className="fas fa-arrow-right" style={{padding: "0px 10px"}} />
+          More info <i className="fas fa-arrow-right"/>
         </Text>
         <div />
-      </MenuItem>
+      </MoreInfo>
     </HeaderWrapper>
   );
 };
