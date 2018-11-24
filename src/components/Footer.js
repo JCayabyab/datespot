@@ -29,7 +29,11 @@ class Footer extends Component {
 
   render() {
     const { pos } = this.props;
-    const getPlace = _.debounce(this.props.getPlace, 300);
+    // debounce to prevent multiple calls very quickly
+    const getPlace = _.debounce(this.props.getPlace, 1500, {
+      leading: true,
+      trailing: false
+    });
     return (
       <FooterWrapper>
         <Media query="(max-width: 1000px)">
