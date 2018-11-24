@@ -5,9 +5,9 @@ import styled from "styled-components";
 
 const HeaderWrapper = styled(Row)`
   @media (min-width: 768px) {
-    height: 40px;
-    align-items: center;
+    height: 50px;
   }
+  align-items: center;
 `;
 
 const Header = ({ place, description }) => {
@@ -27,7 +27,6 @@ const Header = ({ place, description }) => {
         rel="noopener noreferrer"
         href={directionsURL}
         target="_blank"
-        style={{ height: "40px" }}
       >
         <Text style={{ fontWeight: "normal" }}>Directions</Text>
       </MenuItem>
