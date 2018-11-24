@@ -10,7 +10,7 @@ class MapContainer extends Component {
     const { place } = this.props;
     if (place.geometry) {
       const placePos = place.geometry.location;
-      return <Marker position={placePos} />;
+      return <Marker position={placePos} icon="https://i.imgur.com/xNXISvV.png"/>;
     }
   }
 

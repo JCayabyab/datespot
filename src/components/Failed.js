@@ -11,7 +11,7 @@ const Wrapper = styled.div`
 const Failed = () => (
   <Wrapper className="container">
     <div>
-      <Text style={{ textAlign: "center" }}>
+      <Text style={{marginBottom: "-30px"}}>
         Sorry! We couldn't find your location.
       </Text>
     </div>

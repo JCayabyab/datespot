@@ -95,7 +95,10 @@ export const getDirections = (origin, destination) => async dispatch => {
         payload: results
       });
     } else {
-      console.log(status);
+      console.log(
+        status,
+        ": DIRECTIONS ERROR. Notify the developer of this app with this issue."
+      );
       dispatch({
         type: GET_DIRECTIONS,
         payload: status

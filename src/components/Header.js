@@ -38,7 +38,10 @@ const Header = ({ place, description }) => {
         <div>{place.name || "..."}</div>
       </Text>
       <MenuItem {...detailsProps}>
-        <Text style={{ fontWeight: "normal" }}>Details</Text>
+        <Text style={{ fontWeight: "normal" }}>
+          More info <i className="fas fa-arrow-right" style={{padding: "0px 10px"}} />
+        </Text>
+        <div />
       </MenuItem>
     </HeaderWrapper>
   );

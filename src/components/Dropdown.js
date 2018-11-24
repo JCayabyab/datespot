@@ -110,7 +110,7 @@ const Icon = styled.i`
 const List = styled.div`
   position: absolute;
   top: ${props =>
-    props.list ? `-${props.list.length * (16 + 20 * 2 + 9)}px` : "100%"};
+    props.list ? `-${props.list.length * (16 + 20 * 2 + 9) - 1}px` : "100%"};
   left: 0;
   width: 100%;
   z-index: 1000;

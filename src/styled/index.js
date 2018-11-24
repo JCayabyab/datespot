@@ -1,8 +1,9 @@
 import styled from "styled-components";
 
 export const LoadingIcon = styled.img`
-  height: 50px;
-  width: 50px;
+  height: 80px;
+  width: 80px;
+  margin: 10px;
 `;
 
 export const MenuItem = styled.a`
