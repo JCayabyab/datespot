@@ -39,7 +39,13 @@ class Dropdown extends Component {
         {isOpen && (
           <List list={OptionsList}>
             {OptionsList.map(({ title, key }) => (
-              <ListItem key={key} onClick={() => getPlace(pos, key)}>
+              <ListItem
+                key={key}
+                onClick={() => {
+                  getPlace(pos, key);
+                  this.setState({ isOpen: false });
+                }}
+              >
                 <Text>{title}</Text>
               </ListItem>
             ))}
