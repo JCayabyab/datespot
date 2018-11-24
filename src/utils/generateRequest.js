@@ -3,7 +3,7 @@ import randomElement from "./randomElement";
 const types = {
   fun: [
     {
-      description: "Ride rollercoasters at",
+      description: "Get your heart pumping at",
       type: "amusement_park"
     },
     {
