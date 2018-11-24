@@ -26,7 +26,7 @@ const types = {
       type: "store"
     },
     { query: "laser tag", description: "Play laser tag at" },
-    { query: "billiards", description: "Sink balls into pockets at" }
+    { query: "billiards", description: "Play some pool at" }
   ],
   food: [
     { query: "ice cream", description: "Get some ice cream at" },
