@@ -12,27 +12,44 @@ export const getPlace = ({ lat, lng }, key) => async dispatch => {
   const service = new maps.places.PlacesService(document.createElement("div"));
   const location = new maps.LatLng(lat, lng);
 
-  const { request, description } = generateRequest(location, key);
+  let counter = 0;
 
-  console.log(request.keyword);
+  const makeRequest = (resolve, reject, counter) => {
+    const { request, description } = generateRequest(location, key);
 
-  service.nearbySearch(request, (results, status) => {
-    if (status === maps.places.PlacesServiceStatus.OK) {
-      dispatch({
-        type: GET_PLACE,
-        payload: randomElement(results)
-      });
-      dispatch({
-        type: GET_DESCRIPTION,
-        payload: description
-      });
-    } else {
-      console.log(status);
-      dispatch({
-        type: GET_PLACE,
-        payload: status
-      });
-    }
+    service.nearbySearch(request, (results, status) => {
+      if (status === maps.places.PlacesServiceStatus.OK) {
+        console.log(resolve, reject);
+        resolve({ results, description });
+        return;
+      } else {
+        if (counter < 3) {
+          counter++;
+          makeRequest(resolve, reject, counter);
+        } else {
+          console.log("exit", status, reject, counter);
+          // dispatch({
+          //   type: GET_PLACE,
+          //   payload: status
+          // });
+          reject(status);
+        }
+      }
+    });
+  };
+
+  new Promise((resolve, reject) => {
+    makeRequest(resolve, reject, counter);
+  }).then(data => {
+    console.log(data);
+    dispatch({
+      type: GET_PLACE,
+      payload: randomElement(data.results)
+    });
+    dispatch({
+      type: GET_DESCRIPTION,
+      payload: data.description
+    });
   });
 };
 
@@ -74,10 +91,10 @@ const generateRequest = (location, key) => {
       { query: "bowling alley", description: "Bowl some gutterballs at" },
       { query: "movie theater", description: "Watch a horror movie at" },
       { query: "zoo", description: "Feed some animals at" },
-      { query: "paint nite", description: "Make a masterpiece at" },
+      { query: "paint night", description: "Make a masterpiece at" },
       { query: "record store", description: "Bond over music at" },
       { query: "laser tag", description: "Shoot your shot at" },
-      { query: "pool house", description: "Sink balls into pockets at" }
+      { query: "pool", description: "Sink balls into pockets at" }
     ],
     food: [
       { query: "ice cream shop", description: "Get some ice cream at" },
@@ -98,13 +115,11 @@ const generateRequest = (location, key) => {
     ]
   };
 
-  console.log(location.lat(), location.lng());
-
   const request = {
     radius: 30000,
     location,
     minPriceLevel: 1,
-    fields: ["geometry", "name", "id", "place_id"]
+    fields: ["geometry", "name", "id", "place_id", "types"]
   };
 
   const { query, description } = randomElement(types[key]);
