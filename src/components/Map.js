@@ -41,31 +41,21 @@ export class Map extends React.Component {
   constructor(props) {
     super(props);
 
-    if (!props.hasOwnProperty("google")) {
-      throw new Error("You must include a `google` prop");
-    }
-
     this.listeners = {};
     this.state = {
-      currentLocation: {
-        lat: this.props.initialCenter.lat,
-        lng: this.props.initialCenter.lng
-      },
       directionsRenderer: null
     };
   }
 
   componentDidMount() {
+    // call all map loading logic on map load
     this.loadMap();
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevProps.google !== this.props.google) {
-      this.loadMap();
-    }
+    // if a destination is passed, call getDirections and update map bounds
     if (this.props.dest && prevProps.dest !== this.props.dest) {
-      const { google } = this.props;
-      const bounds = new google.maps.LatLngBounds();
+      const bounds = new window.google.maps.LatLngBounds();
       bounds.extend(this.props.initialCenter);
       bounds.extend(this.props.dest);
       this.map.fitBounds(bounds);
@@ -74,6 +64,7 @@ export class Map extends React.Component {
     if (prevProps.directions !== this.props.directions) {
       this.renderDirections();
     }
+    // allows for dynamic map toggling on app runtime
     if (this.props.visible !== prevProps.visible) {
       this.restyleMap();
     }
@@ -84,10 +75,6 @@ export class Map extends React.Component {
       this.setState({
         currentLocation: this.props.center
       });
-    }
-    if (prevState.currentLocation !== this.state.currentLocation) {
-      console.log(prevState.currentLocation, this.state.currentLocation);
-      this.recenterMap();
     }
     if (this.props.bounds && this.props.bounds !== prevProps.bounds) {
       this.map.fitBounds(this.props.bounds);
@@ -104,60 +91,58 @@ export class Map extends React.Component {
     });
   }
 
+  // called when map is first called
   loadMap() {
-    if (this.props && this.props.google) {
-      const { google } = this.props;
-      const maps = google.maps;
+    const { maps } = window.google;
 
-      const mapRef = this.refs.map;
-      const node = ReactDOM.findDOMNode(mapRef);
-      const curr = this.state.currentLocation;
-      const center = new maps.LatLng(curr.lat, curr.lng);
-      const mapTypeIds = this.props.google.maps.MapTypeId || {};
-      const mapTypeFromProps = String(this.props.mapType).toUpperCase();
+    const mapRef = this.refs.map;
+    const node = ReactDOM.findDOMNode(mapRef);
+    const curr = this.props.initialCenter;
+    const center = new maps.LatLng(curr.lat, curr.lng);
+    const mapTypeIds = window.google.maps.MapTypeId || {};
+    const mapTypeFromProps = String(this.props.mapType).toUpperCase();
 
-      const mapConfig = Object.assign(
-        {},
-        {
-          mapTypeId: mapTypeIds[mapTypeFromProps],
-          center: center,
-          zoom: this.props.zoom,
-          maxZoom: this.props.maxZoom,
-          minZoom: this.props.minZoom,
-          clickableIcons: !!this.props.clickableIcons,
-          disableDefaultUI: this.props.disableDefaultUI,
-          zoomControl: this.props.zoomControl,
-          mapTypeControl: this.props.mapTypeControl,
-          scaleControl: this.props.scaleControl,
-          streetViewControl: this.props.streetViewControl,
-          panControl: this.props.panControl,
-          rotateControl: this.props.rotateControl,
-          fullscreenControl: this.props.fullscreenControl,
-          scrollwheel: this.props.scrollwheel,
-          draggable: this.props.draggable,
-          draggableCursor: this.props.draggableCursor,
-          keyboardShortcuts: this.props.keyboardShortcuts,
-          disableDoubleClickZoom: this.props.disableDoubleClickZoom,
-          noClear: this.props.noClear,
-          styles: this.props.styles,
-          gestureHandling: this.props.gestureHandling
-        }
-      );
+    const mapConfig = Object.assign(
+      {},
+      {
+        mapTypeId: mapTypeIds[mapTypeFromProps],
+        center: center,
+        zoom: this.props.zoom,
+        maxZoom: this.props.maxZoom,
+        minZoom: this.props.minZoom,
+        clickableIcons: !!this.props.clickableIcons,
+        disableDefaultUI: this.props.disableDefaultUI,
+        zoomControl: this.props.zoomControl,
+        mapTypeControl: this.props.mapTypeControl,
+        scaleControl: this.props.scaleControl,
+        streetViewControl: this.props.streetViewControl,
+        panControl: this.props.panControl,
+        rotateControl: this.props.rotateControl,
+        fullscreenControl: this.props.fullscreenControl,
+        scrollwheel: this.props.scrollwheel,
+        draggable: this.props.draggable,
+        draggableCursor: this.props.draggableCursor,
+        keyboardShortcuts: this.props.keyboardShortcuts,
+        disableDoubleClickZoom: this.props.disableDoubleClickZoom,
+        noClear: this.props.noClear,
+        styles: this.props.styles,
+        gestureHandling: this.props.gestureHandling
+      }
+    );
 
-      Object.keys(mapConfig).forEach(key => {
-        // Allow to configure mapConfig with 'false'
-        if (mapConfig[key] === null) {
-          delete mapConfig[key];
-        }
-      });
+    Object.keys(mapConfig).forEach(key => {
+      // Allow to configure mapConfig with 'false'
+      if (mapConfig[key] === null) {
+        delete mapConfig[key];
+      }
+    });
 
-      this.map = new maps.Map(node, mapConfig);
-      evtNames.forEach(e => {
-        this.listeners[e] = this.map.addListener(e, this.handleEvent(e));
-      });
-      maps.event.trigger(this.map, "ready");
-      this.forceUpdate();
-    }
+    this.map = new maps.Map(node, mapConfig);
+    evtNames.forEach(e => {
+      this.listeners[e] = this.map.addListener(e, this.handleEvent(e));
+    });
+    maps.event.trigger(this.map, "ready");
+    this.forceUpdate();
   }
 
   handleEvent(evtName) {
@@ -179,11 +164,11 @@ export class Map extends React.Component {
 
   async renderDirections() {
     const map = this.map;
-    const { google, directions } = this.props;
+    const { directions } = this.props;
 
     if (!this.state.directionsRenderer) {
       await this.setState({
-        directionsRenderer: new google.maps.DirectionsRenderer({
+        directionsRenderer: new window.google.maps.DirectionsRenderer({
           map,
           draggable: false,
           hideRouteList: false,
@@ -195,29 +180,9 @@ export class Map extends React.Component {
     this.state.directionsRenderer.setDirections(directions);
   }
 
-  recenterMap() {
-    const map = this.map;
-
-    const { google } = this.props;
-
-    if (!google) return;
-    const maps = google.maps;
-
-    if (map) {
-      let center = this.state.currentLocation;
-      if (!(center instanceof google.maps.LatLng)) {
-        center = new google.maps.LatLng(center.lat, center.lng);
-      }
-      // map.panTo(center)
-      map.setCenter(center);
-      maps.event.trigger(map, "recenter");
-    }
-  }
-
   restyleMap() {
     if (this.map) {
-      const { google } = this.props;
-      google.maps.event.trigger(this.map, "resize");
+      window.google.maps.event.trigger(this.map, "resize");
     }
   }
 
@@ -230,8 +195,8 @@ export class Map extends React.Component {
       if (!c) return;
       return React.cloneElement(c, {
         map: this.map,
-        google: this.props.google,
-        mapCenter: this.state.currentLocation
+        google: window.google,
+        mapCenter: this.props.initialCenter
       });
     });
   }
@@ -253,7 +218,6 @@ export class Map extends React.Component {
 }
 
 Map.propTypes = {
-  google: PropTypes.object,
   zoom: PropTypes.number,
   centerAroundCurrentLocation: PropTypes.bool,
   center: PropTypes.object,
