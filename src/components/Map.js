@@ -63,7 +63,7 @@ export class Map extends React.Component {
     if (prevProps.google !== this.props.google) {
       this.loadMap();
     }
-    if (prevProps.dest !== this.props.dest) {
+    if (this.props.dest && prevProps.dest !== this.props.dest) {
       const { google } = this.props;
       const bounds = new google.maps.LatLngBounds();
       bounds.extend(this.props.initialCenter);
