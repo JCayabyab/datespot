@@ -53,7 +53,7 @@ const types = {
 
 const generateRequest = (location, key) => {
   const request = {
-    radius: 30000,
+    radius: 15000,
     location,
     fields: ["geometry", "name", "id", "place_id", "types"]
   };
