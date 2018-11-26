@@ -26,7 +26,7 @@ class Footer extends Component {
   render() {
     const { pos } = this.props;
     // debounce to prevent multiple calls very quickly
-    const getPlace = _.debounce(this.props.getPlace, 1500, {
+    const getPlace = _.debounce(this.props.getPlace, 700, {
       leading: true,
       trailing: false
     });

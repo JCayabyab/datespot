@@ -26,7 +26,8 @@ const types = {
       type: "store"
     },
     { query: "laser tag", description: "Play laser tag at" },
-    { query: "billiards", description: "Play some pool at" }
+    { query: "billiards", description: "Play some pool at" },
+    {query: "skating rink", description: "Put your ice skates on at"}
   ],
   food: [
     { query: "ice cream", description: "Get some ice cream at" },
@@ -38,8 +39,8 @@ const types = {
     }
   ],
   drink: [
-    { type: "bar", description: "Get some drinks at" },
-    { type: "night_club", description: "Get your dance on at" }
+    { type: "bar", description: "Get some drinks at", query: "wine" },
+    { type: "night_club", description: "Get your dance on at", query: "nightclub" }
   ],
   stroll: [
     { type: "art_gallery", description: "Find cool paintings at" },
