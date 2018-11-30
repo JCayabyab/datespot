@@ -178,7 +178,12 @@ export class Map extends React.Component {
           map,
           draggable: false,
           hideRouteList: false,
-          markerOptions: { visible: false }
+          markerOptions: { visible: false },
+          polylineOptions: {
+            strokeColor: "#e00",
+            strokeOpacity: 0.7,
+            strokeWeight: 5
+          }
         })
       });
     }
