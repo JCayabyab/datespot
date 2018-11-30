@@ -131,11 +131,10 @@ export class Map extends React.Component {
         gestureHandling: this.props.gestureHandling
       }
     );
-    
+
     // night time toggle (from 7pm to 6am)
     if (new Date().getHours() > 19 || new Date().getHours() < 6) {
       Object.assign(mapConfig, { styles: nightStyles });
-      console.log(mapConfig);
     }
 
     Object.keys(mapConfig).forEach(key => {
