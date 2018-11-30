@@ -46,7 +46,7 @@ const types = {
     { type: "book_store", description: "Bond over books at" },
     { query: "coffee house", description: "Bond over coffee at" },
     { type: "park", description: "Take a stroll through" },
-    { type: "shopping_mall", description: "Take a stroll through" },
+    { type: "shopping_mall", description: "Get your shop on at" },
     { type: "museum", description: "Look through old relics at" }
   ]
 };
