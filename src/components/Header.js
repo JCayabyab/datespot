@@ -4,10 +4,16 @@ import { connect } from "react-redux";
 import styled from "styled-components";
 
 const HeaderWrapper = styled(Row)`
-  @media (min-width: 768px) {
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+  justify-content: space-between;
+  align-items: stretch;
+
+  & > * {
+    flex: 1;
     height: 50px;
   }
-  align-items: center;
 `;
 
 const Header = ({ place, description }) => {
@@ -17,7 +23,6 @@ const Header = ({ place, description }) => {
 
   // object for optional href
   const detailsProps = {
-    className: "col-xs-12 col-md-3",
     rel: "noopener noreferrer",
     target: "_blank"
   };
@@ -31,17 +36,16 @@ const Header = ({ place, description }) => {
 
   return (
     <HeaderWrapper>
-      <Text style={{ fontWeight: "normal" }} className="col-xs-12 col-md-3">
+      <Text style={{ fontWeight: "normal" }}>
         <div>{description}</div>
       </Text>
-      <Text className="col-xs-12 col-md-6">
+      <Text>
         <div>{place.name || "..."}</div>
       </Text>
       <MoreInfo {...detailsProps}>
         <Text style={{ fontWeight: "normal" }}>
-          More info <i className="fas fa-arrow-right"/>
+          More info <i className="fas fa-arrow-right" />
         </Text>
-        <div />
       </MoreInfo>
     </HeaderWrapper>
   );
